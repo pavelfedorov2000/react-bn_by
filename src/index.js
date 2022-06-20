@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import AsideText from './AsideText/AsideText';
 import './base/_general.scss';
 import Help from './Help/Help';
 import Nav from './Nav/Nav';
+import Step from './Step/Step';
 
 function App() {
 
     const data = [
         {
             id: 0,
+            required: true,
+            visible: true,
             step: 'contacts',
             title: 'Личные данные',
             fieldsets: [
                 {
+                    id: 0,
                     title: 'Ваши контакты',
                     fields: [
                         {
@@ -56,9 +60,9 @@ function App() {
             id: 1,
             step: 'order',
             title: 'Заказ',
-            text: '',
             fieldsets: [
                 {
+                    id: 0,
                     title: 'Тарифный план',
                     fields: [
                         {
@@ -94,6 +98,7 @@ function App() {
                     ]
                 },
                 {
+                    id: 1,
                     title: 'Дополнительные услуги',
                     fields: [
                         {
@@ -113,7 +118,8 @@ function App() {
                     ]
                 },
                 {
-                    title: 'Дополнительные услуги',
+                    id: 2,
+                    title: 'Адрес подключения',
                     toggle: true,
                     name: "connection",
                     fields: [
@@ -125,6 +131,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Область',
+                            id: 'region',
                             name: 'region',
                             options: [
                                 "Выберите область",
@@ -136,6 +143,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Тип населенного пункта',
+                            id: 'localityType',
                             name: 'locality_type',
                             options: [
                                 "Выберите тип населенного пункта",
@@ -147,6 +155,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Населенный пункт',
+                            id: 'locality',
                             name: 'locality',
                             options: [
                                 "Выберите населенный пункт",
@@ -158,6 +167,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Тип улицы',
+                            id: 'streetType',
                             name: 'street_type',
                             options: [
                                 "Выберите тип улицы",
@@ -169,6 +179,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Улица',
+                            id: 'street',
                             name: 'street',
                             options: [
                                 "Выберите улицу",
@@ -222,35 +233,241 @@ function App() {
                 }
             ]
         },
+        {
+            id: 2,
+            step: 'passport',
+            title: 'Паспортные данные',
+            fieldsets: [
+                {
+                    id: 0,
+                    fields: [
+                        {
+                            inputType: 'radio',
+                            label: 'Являетесь ли Вы резидентом Республики Беларусь?',
+                            name: 'resident',
+                            items: ['Да', 'Нет'],
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Вид документа',
+                            name: 'document',
+                            options: [
+                                "Выберите вид документа",
+                                "Паспорт",
+                                "Удостоверение",
+                            ]
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Серия',
+                            name: 'passport_series',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Номер паспорта',
+                            name: 'passport_num',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Дата выдачи паспорта',
+                            name: 'passport_from',
+                            placeholder: '01.01.2001',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Срок действия паспорта',
+                            name: 'passport_to',
+                            placeholder: '01.01.2001',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Идентификационный номер',
+                            name: 'identification_number',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Кем выдан паспорт',
+                            name: 'passport_issued_by',
+                            placeholder: 'Октябрьским РОВД'
+                        }
+                    ]
+                },
+                {
+                    id: 1,
+                    title: 'Адрес регистрации',
+                    toggle: true,
+                    name: "registration",
+                    fields: [
+                        {
+                            inputType: 'checkbox',
+                            label: 'Совпадает с адресом подключения',
+                            name: 'register_address_matches',
+                        },
+                        {
+                            inputType: 'input',
+                            label: 'Индекс',
+                            name: 'index',
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Область',
+                            id: 'region',
+                            name: 'region',
+                            options: [
+                                "Выберите область",
+                                "Область 1",
+                                "Область 2",
+                                "Область 3"
+                            ]
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Тип населенного пункта',
+                            id: 'localityType',
+                            name: 'locality_type',
+                            options: [
+                                "Выберите тип населенного пункта",
+                                "Тип населенного пункта 1",
+                                "Тип населенного пункта 2",
+                                "Тип населенного пункта 3"
+                            ]
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Населенный пункт',
+                            id: 'locality',
+                            name: 'locality',
+                            options: [
+                                "Выберите населенный пункт",
+                                "Населенный пункт 1",
+                                "Населенный пункт 2",
+                                "Населенный пункт 3"
+                            ]
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Тип улицы',
+                            id: 'streetType',
+                            name: 'street_type',
+                            options: [
+                                "Выберите тип улицы",
+                                "Тип улицы 1",
+                                "Тип улицы 2",
+                                "Тип улицы 3"
+                            ]
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Улица',
+                            id: 'street',
+                            name: 'street',
+                            options: [
+                                "Выберите улицу",
+                                "Улица 1",
+                                "Улица 2",
+                                "Улица 3"
+                            ],
+                            checkbox: "В адресе улицы отсутствует название улицы"
+                        },
+                        {
+                            inputType: 'input',
+                            size: "small",
+                            label: 'Дом',
+                            name: 'home',
+                        },
+                        {
+                            inputType: 'input',
+                            size: "small",
+                            label: 'Корпус / строение',
+                            name: 'corpus',
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Тип помещения',
+                            id: 'roomType',
+                            name: 'room_type',
+                            options: [
+                                "Выберите улицу",
+                                "Тип помещения 1",
+                                "Тип помещения 2",
+                                "Тип помещения 3"
+                            ]
+                        },
+                        {
+                            inputType: 'select',
+                            label: 'Помещение',
+                            id: 'room',
+                            name: 'room',
+                            options: [
+                                "Выберите улицу",
+                                "Помещение 1",
+                                "Помещение 2",
+                                "Помещение 3"
+                            ],
+                            checkbox: "Это единое строение, помещения нет"
+                        },
+                        {
+                            inputType: 'textarea',
+                            label: 'Комментарий по адресу',
+                            name: 'address_comment',
+                        },
+                    ]
+                },
+                {
+                    id: 2,
+                    title: 'Ваш менеджер',
+                    fields: [
+                        {
+                            inputType: 'select',
+                            label: 'Помещение',
+                            id: 'yourManager',
+                            name: 'your_manager',
+                            options: [
+                                "Выберите улицу",
+                                "Помещение 1",
+                                "Помещение 2",
+                                "Помещение 3"
+                            ],
+                        }
+                    ]
+                }
+            ]
+        },
     ];
+
+    const [formData, setFormData] = useState(data);
+    console.log(formData);
+    const [currentStep, setCurrentStep] = useState(0);
+    console.log(currentStep);
+    const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
+    console.log(visibleStep);
 
     return (
         <div className="wrapper">
             <main className="page">
-                <form id="physical_form" action="#" class="form-page">
-                    <div class="steps">
-                        <div class="_container">
-                            <div class="form-page__inner">
-                                <div class="form-page__aside">
-                                    <h1 class="form-page__title">Заявление на подключение</h1>
-                                    <AsideText />
+                <form id="physical_form" action="#" className="form-page">
+                    <div className="steps">
+                        <div className="_container">
+                            <div className="form-page__inner">
+                                <div className="form-page__aside">
+                                    <h1 className="form-page__title">Заявление на подключение</h1>
+                                    <AsideText currentStep={currentStep} />
                                     <Help />
                                 </div>
-                                <div class="form-page__content">
-                                    <Nav />
-                                    <div class="form__body">
-
+                                <div className="form-page__content">
+                                    <Nav steps={formData} currentStep={currentStep} />
+                                    <div className="form__body">
+                                        <Step step={visibleStep} />
                                     </div>
-                                    <div class="form__buttons">
-                                        <button class="btn back-btn btn--border" type="button">Назад</button>
-                                        <button class="btn next-btn" type="button" disabled>Продолжить</button>
+                                    <div className="form__buttons">
+                                        <button className="btn back-btn btn--border" type="button">Назад</button>
+                                        <button className="btn next-btn" type="button" disabled>Продолжить</button>
                                     </div>
-                                    <AsideText />
+                                    <AsideText currentStep={currentStep} />
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </form>
             </main>
         </div>

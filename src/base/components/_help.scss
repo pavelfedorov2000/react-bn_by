@@ -1,0 +1,24 @@
+.help {
+    &__title {
+        margin-bottom: 11px;
+    }
+
+    &__call {
+        display: flex;
+        align-items: center;
+        font-size: 28px;
+        line-height: 100%;
+        color: #13284a;
+
+        @media (any-hover: hover) {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        margin-right: 11px;
+    }
+}

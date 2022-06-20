@@ -1,0 +1,47 @@
+input,
+textarea {
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 22px;
+
+    @media (max-width: 575px) {
+        font-size: 14px;
+        line-height: 19px;
+    }
+}
+
+.input {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 14px 20px;
+    color: rgba(#13284a, 0.7);
+    transition: 0.3s all;
+
+    @media (any-hover: hover) {
+        &:hover {
+            border-color: #9ee2dc;
+        }
+    }
+
+    &:active,
+    &:focus {
+        box-shadow: 0px 0px 6px #00c4b329;
+        border-color: #00c4b3;
+    }
+
+    &::placeholder {
+        color: #ddd;
+    }
+
+    &[type='tel'] {
+        &::placeholder {
+            color: rgba(#13284a, 0.7);
+        }
+    }
+}
+
+.textarea {
+    min-height: 100px;
+}
