@@ -101,11 +101,9 @@ a {
     &__aside-text {
         margin-bottom: auto;
 
-        > div {
-            p {
-                &:not(:last-child) {
-                    margin-bottom: 20px;
-                }
+        p {
+            &:not(:last-child) {
+                margin-bottom: 20px;
             }
         }
 

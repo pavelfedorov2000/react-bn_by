@@ -51,9 +51,7 @@ function AsideText({ currentStep }) {
         <div className="form-page__aside-text">
             {
                 currentText && currentText.items.map((item, i) => (
-                    <div key={`paragraph_${i + 1}`}>
-                        <p>{item.bold === true ? <b>{item.text} {item.link ? <a href="#">{`${item.link}`}</a> : null}</b> : item.text}{!item.question && `.`}</p>
-                    </div>
+                    <p key={`paragraph_${i + 1}`}>{item.bold === true ? <b>{item.text} {item.link ? <a href="#">{`${item.link}`}</a> : null}</b> : item.text}{!item.question && `.`}</p>
                 ))
             }
         </div>

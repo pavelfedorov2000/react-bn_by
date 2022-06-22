@@ -13,6 +13,7 @@ function App() {
             id: 0,
             required: true,
             visible: true,
+            valid: false,
             step: 'contacts',
             title: 'Личные данные',
             fieldsets: [
@@ -25,18 +26,24 @@ function App() {
                             label: 'Фамилия',
                             name: 'surname',
                             required: true,
+                            value: '',
+                            valid: false,
                         },
                         {
                             inputType: 'input',
                             label: 'Имя',
-                            name: 'surname',
+                            name: 'name',
                             required: true,
+                            value: '',
+                            valid: false,
                         },
                         {
                             inputType: 'input',
                             label: 'Отчество',
                             name: 'patronymic',
                             required: true,
+                            value: '',
+                            valid: false,
                         },
                         {
                             inputType: 'input',
@@ -44,6 +51,9 @@ function App() {
                             label: 'Номер телефона',
                             name: 'phone',
                             required: true,
+                            value: '',
+                            mask: '+375 (99) 999-99-99',
+                            valid: false,
                         },
                         {
                             inputType: 'input',
@@ -51,6 +61,9 @@ function App() {
                             label: 'Адрес электронной почты',
                             name: 'email',
                             required: true,
+                            value: '',
+                            placeholder: 'e-mail@email.com',
+                            valid: false,
                         }
                     ]
                 }
@@ -430,6 +443,27 @@ function App() {
                             ],
                         }
                     ]
+                },
+                {
+                    id: 3,
+                    title: 'Иные пожелания',
+                    fields: [
+                        {
+                            inputType: 'textarea',
+                            name: 'other_wishes',
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    fields: [
+                        {
+                            inputType: 'checkbox',
+                            name: 'agree',
+                            agree: false,
+                            label: 'Нажимая Готово, я подтверждаю, что ознакомлен(-а) с Политикой конфиденциальности и даю свое согласие на обработку моих персональных данных на условиях Политики Конфиденциальности.'
+                        }
+                    ]
                 }
             ]
         },
@@ -460,8 +494,8 @@ function App() {
                                         <Step step={visibleStep} />
                                     </div>
                                     <div className="form__buttons">
-                                        <button className="btn back-btn btn--border" type="button">Назад</button>
-                                        <button className="btn next-btn" type="button" disabled>Продолжить</button>
+                                        {currentStep != 0 && <button type="button" className="btn back-btn btn--border">Назад</button>}
+                                        <button type="button" className="btn next-btn" disabled={!currentStep.valid ? true : false}>Продолжить</button>
                                     </div>
                                     <AsideText currentStep={currentStep} />
                                 </div>

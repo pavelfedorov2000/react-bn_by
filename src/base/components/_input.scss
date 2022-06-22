@@ -40,6 +40,15 @@ textarea {
             color: rgba(#13284a, 0.7);
         }
     }
+
+    &.error {
+        border-color: #ec2b59;
+
+        &:active,
+        &:focus {
+            box-shadow: 0px 0px 6px #ec2b5929;
+        }
+    }
 }
 
 .textarea {
