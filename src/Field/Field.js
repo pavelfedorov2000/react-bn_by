@@ -43,9 +43,9 @@ function Field({ inputType, name, label, required, type, mask, placeholder, vali
 
     const handleChangeInput = (e) => {
         if (e.target.value.length > 0) {
-            validField = true;
+            setValidField(true);
         } else {
-            validField = false;
+            setValidField(false);
         }
     }
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import AsideText from './AsideText/AsideText';
 import './base/_general.scss';
+import Button from './Button/Button';
 import Help from './Help/Help';
 import Nav from './Nav/Nav';
 import Step from './Step/Step';
@@ -27,7 +28,7 @@ function App() {
                             name: 'surname',
                             required: true,
                             value: '',
-                            valid: false,
+                            //valid: false,
                         },
                         {
                             inputType: 'input',
@@ -35,7 +36,7 @@ function App() {
                             name: 'name',
                             required: true,
                             value: '',
-                            valid: false,
+                            //valid: false,
                         },
                         {
                             inputType: 'input',
@@ -43,7 +44,7 @@ function App() {
                             name: 'patronymic',
                             required: true,
                             value: '',
-                            valid: false,
+                            //valid: false,
                         },
                         {
                             inputType: 'input',
@@ -53,7 +54,7 @@ function App() {
                             required: true,
                             value: '',
                             mask: '+375 (99) 999-99-99',
-                            valid: false,
+                            //valid: false,
                         },
                         {
                             inputType: 'input',
@@ -63,7 +64,7 @@ function App() {
                             required: true,
                             value: '',
                             placeholder: 'e-mail@email.com',
-                            valid: false,
+                            //valid: false,
                         }
                     ]
                 }
@@ -113,6 +114,7 @@ function App() {
                 {
                     id: 1,
                     title: 'Дополнительные услуги',
+                    type: 'checks',
                     fields: [
                         {
                             inputType: 'checkbox',
@@ -470,11 +472,29 @@ function App() {
     ];
 
     const [formData, setFormData] = useState(data);
-    console.log(formData);
-    const [currentStep, setCurrentStep] = useState(0);
-    console.log(currentStep);
+    //console.log(formData);
+    const [currentStep, setCurrentStep] = useState(1);
+    //console.log(currentStep);
     const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
     console.log(visibleStep);
+
+    let step;
+
+    const prevStep = () => {
+        step = +currentStep - 1;
+        setCurrentStep(step);
+        const stepObj = data.find(step => step.id == step);
+        setVisibleStep(stepObj);
+    }
+
+    const nextStep = () => {
+        step = +currentStep + 1;
+        setCurrentStep(step);
+        console.log(step);
+        const stepObj = data.find(step => step.id == step);
+        setVisibleStep(stepObj);
+        console.log(visibleStep);
+    }
 
     return (
         <div className="wrapper">
@@ -494,8 +514,8 @@ function App() {
                                         <Step step={visibleStep} />
                                     </div>
                                     <div className="form__buttons">
-                                        {currentStep != 0 && <button type="button" className="btn back-btn btn--border">Назад</button>}
-                                        <button type="button" className="btn next-btn" disabled={!currentStep.valid ? true : false}>Продолжить</button>
+                                        {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
+                                        <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" disabled={currentStep.valid ? true : false} />
                                     </div>
                                     <AsideText currentStep={currentStep} />
                                 </div>

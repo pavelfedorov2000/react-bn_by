@@ -44,7 +44,7 @@ function AsideText({ currentStep }) {
     ];
 
     const currentText = asideText.find(text => text.id == currentStep);
-    console.log(currentText);
+    //console.log(currentText);
     //const { text, bold, link } = currentText;
 
     return (

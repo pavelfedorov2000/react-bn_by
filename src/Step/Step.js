@@ -7,7 +7,10 @@ function Step({ step }) {
     return (
         step.fieldsets.map(fieldset => (
             <fieldset key={fieldset.id} className="form__step form__fieldset">
-                <legend className="form__legend">{fieldset.title}</legend>
+                <legend className="form__legend">
+                    <span>{fieldset.title}</span>
+                    {fieldset.toggle && <span className="form__legend-drop"></span>}
+                </legend>
                 <>
                     {
                         fieldset.fields.map(field => (
