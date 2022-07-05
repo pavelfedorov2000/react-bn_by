@@ -23,9 +23,10 @@ const email = (value) => {
     localStorage.setItem("name", JSON.stringify(name));
 }, [name]); */
 
-function Field({ inputType, name, label, required, type, mask, placeholder, valid }) {
+function Field({ inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches }) {
 
-    function generateFieldTag(inputType, name, type, mask, placeholder, required, valid) {
+    function generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check) {
+
         switch (inputType) {
             case 'input':
                 return mask ?
@@ -33,9 +34,67 @@ function Field({ inputType, name, label, required, type, mask, placeholder, vali
                         'error': valid === false
                     })} />
                     :
-                    <input onChange={handleChangeInput} name={name} type={type ? type : 'text'} placeholder={placeholder && placeholder} className={classNames('input', {
+                    <input onChange={handleChangeInput} name={toggle ? `${fieldsetName}${name.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('')}` : name} type={type ? type : 'text'} placeholder={placeholder && placeholder} className={classNames('input', {
                         'error': valid === false
                     })} />
+            case 'select':
+                return <div className="select select--price">
+                    <div className="select__title">
+                        <span className="tariff-name">{label}</span>
+                        {name === 'tariff' && <span className="tariff-price"></span>}
+                    </div>
+                    <div className="select__content">
+                        <div className="select__content-inner">
+                            {options.map((option, i) => (
+                                <>
+                                    <input id={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} className="select__input" type="radio" name={name} checked />
+                                    <label htmlFor={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} tabIndex="0" className="select__label" data-value={name !== 'tariff' && option.title}>
+                                        {name === 'tariff' ?
+                                            <>
+                                                <span data-tariff-name={option.title}>{option.title}</span>
+                                                {i !== 0 && <span data-tariff-price>{option.price}</span>}
+                                            </> : option.title
+                                        }
+                                    </label>
+                                </>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            case 'checkbox':
+                return <label key={fieldsetType === 'checks' && check.id} class={classNames('form__check', {
+                    'form__agree': name === 'agree',
+                    'form__check--align-center': matches
+                })}>
+                    <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} />
+                    <span class="check-style"></span>
+                    {fieldsetType === 'checks' &&
+                        <div class="check-title">
+                            {check.title && <span>{check.title}</span>}
+                            {check.price && <span>{check.price}</span>}
+                        </div>
+                    }
+                    {check.text && <div class="check-text">{check.text}</div>}
+                    {(check.label || name === 'agree') &&
+                        <span class="check-content">
+                            {name === 'agree' ?
+                                <>Нажимая <b>Готово</b>, я подтверждаю, что ознакомлен(-а) с <a href="#">Политикой конфиденциальности</a> и даю свое согласие на обработку моих персональных данных на условиях <a href="#">Политики Конфиденциальности</a>.</>
+                                : check.label
+                            }
+                        </span>
+                    }
+                </label>
+            case 'radio':
+                return <div className="form__radios">
+                    {items.map(radio => (
+                        <label key={radio} class="form__radio">
+                            <input class="radio-box" type="radio" name={name} />
+                            <span class="radio-style">{radio}</span>
+                        </label>
+                    ))}
+                </div>
+            case 'textarea':
+                return <textarea className="input textarea" name={`${toggle && fieldsetName}_${name}`} placeholder={placeholder}></textarea>
         }
     }
 
@@ -50,12 +109,30 @@ function Field({ inputType, name, label, required, type, mask, placeholder, vali
     }
 
     return (
-        <label className="form__field">
-            <div className={classNames('form__label', {
-                'form__label--required': required
-            })}>{label}</div>
-            {generateFieldTag(inputType, name, type, mask, placeholder, required, valid)}
-        </label>
+        fieldsetType === 'checks' ?
+            <div className="form__checks">
+                {items.map(check => (
+                    generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check)
+                ))}
+            </div>
+            :
+            <>
+                {
+                    matches || name === 'agree' ?
+                        <>
+                            {items.map(check => (
+                                generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check)
+                            ))}
+                        </>
+                        :
+                        <label className="form__field">
+                            <div className={classNames('form__label', {
+                                'form__label--required': required
+                            })}>{label}</div>
+                            {generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches)}
+                        </label>
+                }
+            </>
     );
 }
 

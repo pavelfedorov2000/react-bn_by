@@ -14,7 +14,7 @@ function Step({ step }) {
                 <>
                     {
                         fieldset.fields.map(field => (
-                            <Field key={field.name} {...field} />
+                            <Field key={field.name} {...field} fieldsetType={fieldset.type} toggle={fieldset.toggle} fieldsetName={fieldset.name} />
                         ))
                     }
                 </>
