@@ -2,7 +2,7 @@ import React from 'react';
 
 import Field from '../Field/Field';
 
-function Step({ step }) {
+function Step({ step, data }) {
 
     return (
         step.fieldsets.map(fieldset => (
@@ -13,8 +13,8 @@ function Step({ step }) {
                 </legend>
                 <>
                     {
-                        fieldset.fields.map(field => (
-                            <Field key={field.name} {...field} fieldsetType={fieldset.type} toggle={fieldset.toggle} fieldsetName={fieldset.name} />
+                        fieldset.fields.map((field, i) => (
+                            <Field key={field.name} data={data} {...field} fieldsetType={fieldset.type} toggle={fieldset.toggle} fieldsetName={fieldset.name} />
                         ))
                     }
                 </>

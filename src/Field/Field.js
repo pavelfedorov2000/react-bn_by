@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useEffect } from 'react/cjs/react.development';
 import ReactInputMask from 'react-input-mask';
 import validator from 'react-validation';
+import SlideToggle from "react-slide-toggle";
 //import MaterialInput from '@material-ui/core/Input';
 
 /* const required = (value) => {
@@ -25,6 +26,19 @@ const email = (value) => {
 
 function Field({ inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches }) {
 
+    //const fieldset = step.fieldsets.find(fieldset => fieldset.id == fieldsetId);
+    console.log(options);
+    //const options = fieldset.fields[index].options && fieldset.fields[index].options;
+    //const defaultOption = options && options[0].title;
+    //console.log(defaultOption);
+    const [selectedOption, setSelectedOption] = useState(0);
+    const [selectTitle, setSelectTitle] = useState(options && options[0].title);
+    console.log(selectTitle);
+    const onSelectOption = (i) => {
+        setSelectedOption(i);
+        setSelectTitle(options[selectedOption].title);
+    }
+
     function generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check) {
 
         switch (inputType) {
@@ -38,16 +52,20 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                         'error': valid === false
                     })} />
             case 'select':
-                return <div className="select select--price">
-                    <div className="select__title">
-                        <span className="tariff-name">{label}</span>
+                return <SlideToggle collapsed={true}
+                        render={({ toggle, setCollapsibleElement }) => (
+                            <div className={classNames('select', {
+                    'select--price': name === 'tariff'
+                })}>
+                    <div className="select__title" onClick={toggle}>
+                        <span className={name === 'tariff' ? 'tariff-name': null}>{selectTitle || options[0].title}</span>
                         {name === 'tariff' && <span className="tariff-price"></span>}
                     </div>
-                    <div className="select__content">
+                    <div className="select__content" ref={setCollapsibleElement}>
                         <div className="select__content-inner">
                             {options.map((option, i) => (
                                 <>
-                                    <input id={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} className="select__input" type="radio" name={name} checked />
+                                    <input onChange={onSelectOption(i)} id={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} className="select__input" type="radio" name={name} checked={i === 0 || selectedOption ? true : false} />
                                     <label htmlFor={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} tabIndex="0" className="select__label" data-value={name !== 'tariff' && option.title}>
                                         {name === 'tariff' ?
                                             <>
@@ -61,6 +79,8 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                         </div>
                     </div>
                 </div>
+                        )}
+                />;
             case 'checkbox':
                 return <label key={fieldsetType === 'checks' && check.id} class={classNames('form__check', {
                     'form__agree': name === 'agree',

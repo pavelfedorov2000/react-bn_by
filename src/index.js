@@ -319,6 +319,7 @@ function App() {
                         {
                             inputType: 'select',
                             label: 'Вид документа',
+                            id: 'document',
                             name: 'document',
                             options: [
                                 {
@@ -639,7 +640,7 @@ function App() {
                                 <div className="form-page__content">
                                     <Nav steps={formData} currentStep={currentStep} />
                                     <div className="form__body">
-                                        <Step step={visibleStep} />
+                                        <Step data={formData} step={visibleStep} />
                                     </div>
                                     <div className="form__buttons">
                                         {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
