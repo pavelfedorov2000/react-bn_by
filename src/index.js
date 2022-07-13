@@ -334,6 +334,34 @@ function App() {
                             ]
                         },
                         {
+                            inputType: 'select',
+                            label: 'Гражданство',
+                            id: 'nationality',
+                            name: 'nationality',
+                            hidden: true,
+                            options: [
+                                {
+                                    title: "Выберите гражданство"
+                                },
+                                {
+                                    title: "РБ",
+                                },
+                                {
+                                    title: "РФ",
+                                },
+                                {
+                                    title: "Конго",
+                                },
+                            ]
+                        },
+                        {
+                            inputType: 'radio',
+                            label: 'Есть ли у вас временная регистрация?',
+                            name: 'temporary_registration',
+                            hidden: true,
+                            items: ['Да', 'Нет'],
+                        },
+                        {
                             inputType: 'input',
                             label: 'Серия',
                             name: 'passport_series',
@@ -373,16 +401,16 @@ function App() {
                     title: 'Адрес регистрации',
                     toggle: true,
                     name: "registration",
+                    checkbox: {
+                        inputType: 'checkbox',
+                        matches: true,
+                        items: [
+                            {
+                                label: 'Совпадает с адресом подключения',
+                            }
+                        ]
+                    },
                     fields: [
-                        {
-                            inputType: 'checkbox',
-                            matches: true,
-                            items: [
-                                {
-                                    label: 'Совпадает с адресом подключения',
-                                }
-                            ]
-                        },
                         {
                             inputType: 'input',
                             label: 'Индекс',
@@ -605,7 +633,7 @@ function App() {
     const [currentStep, setCurrentStep] = useState(2);
     //console.log(currentStep);
     const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
-    console.log(visibleStep);
+    //console.log(visibleStep);
 
     let step;
 
@@ -640,7 +668,7 @@ function App() {
                                 <div className="form-page__content">
                                     <Nav steps={formData} currentStep={currentStep} />
                                     <div className="form__body">
-                                        <Step data={formData} step={visibleStep} />
+                                        <Step data={formData} step={visibleStep} currentStep={currentStep} />
                                     </div>
                                     <div className="form__buttons">
                                         {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}

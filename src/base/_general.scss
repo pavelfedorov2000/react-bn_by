@@ -296,12 +296,15 @@ a {
             &:not(:last-child) {
                 margin-bottom: 20px;
             }
+        }
+    }
 
-            >* {
-                &:not(:last-child) {
-                    margin-bottom: 20px;
-                }
-            }
+    &__fields {
+        display: grid;
+        gap: 20px;
+
+        > * {
+            grid-column: span 2;
         }
     }
 
@@ -367,6 +370,10 @@ a {
 
     &__field {
         display: block;
+
+        &--small {
+            grid-column: span 1;
+        }
     }
 
     &__label {
@@ -422,7 +429,7 @@ a {
 
         &--align-center {
             align-items: center;
-            margin-top: 20px;
+            //margin-top: 20px;
         }
 
         &:not(:last-child) {

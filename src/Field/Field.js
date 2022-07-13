@@ -24,7 +24,7 @@ const email = (value) => {
     localStorage.setItem("name", JSON.stringify(name));
 }, [name]); */
 
-function Field({ inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches, setToggleEvent }) {
+function Field({ data, step, currentStep, fieldset, fieldIndex, inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches, setToggleEvent, size, hidden }) {
 
     //const fieldset = step.fieldsets.find(fieldset => fieldset.id == fieldsetId);
     console.log(options);
@@ -43,8 +43,34 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
 
     const onToggle = () => {
         setChecked(!checked);
-        setToggleEvent();
+        setToggleEvent(checked);
     }
+
+    const [nationality, setNationality] = useState(1);
+    const onCheckNationality = (index) => {
+        setNationality(index);
+        console.log(nationality);
+    }
+
+    console.log(fieldset);
+    const hiddenFields = step && step.fieldsets[fieldset].fields;
+    console.log(hiddenFields);
+    const filteredHiddenFields = hiddenFields && hiddenFields.filter(field => field.hidden === true);
+    console.log(filteredHiddenFields);
+
+    const [temporaryRegistration, setTemporaryRegistration] = useState(false);
+    const onCheckTemporaryRegistration = (index) => {
+        setTemporaryRegistration(index);
+    }
+
+    /* function generateRadioChangeFunction(name, i) {
+        switch (name) {
+            case 'nationality':
+                return onCheckNationality(i)
+            case 'temporary_registration':
+                return onCheckTemporaryRegistration(i)
+        }
+    } */
 
     function generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check) {
 
@@ -60,40 +86,40 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                     })} />
             case 'select':
                 return <SlideToggle collapsed={true}
-                        render={({ toggle, setCollapsibleElement }) => (
-                            <div className={classNames('select', {
-                    'select--price': name === 'tariff'
-                })}>
-                    <div className="select__title" onClick={toggle}>
-                        <span className={name === 'tariff' ? 'tariff-name': null}>{selectTitle || options[0].title}</span>
-                        {name === 'tariff' && <span className="tariff-price"></span>}
-                    </div>
-                    <div className="select__content" ref={setCollapsibleElement}>
-                        <div className="select__content-inner">
-                            {options.map((option, i) => (
-                                <>
-                                    <input onChange={onSelectOption(i)} id={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} className="select__input" type="radio" name={name} checked={i === 0 || selectedOption ? true : false} />
-                                    <label htmlFor={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} tabIndex="0" className="select__label" data-value={name !== 'tariff' && option.title}>
-                                        {name === 'tariff' ?
-                                            <>
-                                                <span data-tariff-name={option.title}>{option.title}</span>
-                                                {i !== 0 && <span data-tariff-price>{option.price}</span>}
-                                            </> : option.title
-                                        }
-                                    </label>
-                                </>
-                            ))}
+                    render={({ toggle, setCollapsibleElement }) => (
+                        <div className={classNames('select', {
+                            'select--price': name === 'tariff'
+                        })}>
+                            <div className="select__title" onClick={toggle}>
+                                <span className={name === 'tariff' ? `${name}-name` : null}>{selectTitle || options[0].title}</span>
+                                {name === 'tariff' && <span className={`${name}-price`}></span>}
+                            </div>
+                            <div className="select__content" ref={setCollapsibleElement}>
+                                <div className="select__content-inner">
+                                    {options.map((option, i) => (
+                                        <>
+                                            <input onChange={onSelectOption(i)} id={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} className="select__input" type="radio" name={name} checked={i === 0 || selectedOption ? true : false} />
+                                            <label htmlFor={`${toggle ? fieldsetName : ''}${toggle && id ? id.split('').map((letter, i) => i == 0 ? letter.toUpperCase() : letter).join('') : id}${i}`} tabIndex="0" className="select__label" data-value={name !== 'tariff' && option.title}>
+                                                {name === 'tariff' ?
+                                                    <>
+                                                        <span data-tariff-name={option.title}>{option.title}</span>
+                                                        {i !== 0 && <span data-tariff-price>{option.price}</span>}
+                                                    </> : option.title
+                                                }
+                                            </label>
+                                        </>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                        )}
+                    )}
                 />;
             case 'checkbox':
                 return <label key={fieldsetType === 'checks' && check.id} class={classNames('form__check', {
                     'form__agree': name === 'agree',
                     'form__check--align-center': matches
                 })}>
-                    <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} onChange={matches && onToggle} />
+                    <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} onChange={onToggle} />
                     <span class="check-style"></span>
                     {fieldsetType === 'checks' &&
                         <div class="check-title">
@@ -113,9 +139,9 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                 </label>
             case 'radio':
                 return <div className="form__radios">
-                    {items.map(radio => (
+                    {items.map((radio, i) => (
                         <label key={radio} class="form__radio">
-                            <input class="radio-box" type="radio" name={name} />
+                            <input class="radio-box" type="radio" name={name} onChange={() => onCheckNationality(i)} />
                             <span class="radio-style">{radio}</span>
                         </label>
                     ))}
@@ -152,12 +178,18 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                             ))}
                         </>
                         :
-                        <label className="form__field">
-                            <div className={classNames('form__label', {
-                                'form__label--required': required
-                            })}>{label}</div>
-                            {generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches)}
-                        </label>
+                        <>
+                            {!hidden &&
+                                <label className={classNames('form__field', {
+                                    'form__field--small': size === 'small'
+                                })}>
+                                    <div className={classNames('form__label', {
+                                        'form__label--required': required
+                                    })}>{label}</div>
+                                    {generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches)}
+                                </label>
+                            }
+                        </>
                 }
             </>
     );
