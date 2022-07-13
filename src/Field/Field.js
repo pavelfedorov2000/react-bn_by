@@ -24,7 +24,7 @@ const email = (value) => {
     localStorage.setItem("name", JSON.stringify(name));
 }, [name]); */
 
-function Field({ inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches }) {
+function Field({ inputType, id, name, label, required, type, mask, placeholder, valid, options, toggle, fieldsetName, fieldsetType, items, matches, setToggleEvent }) {
 
     //const fieldset = step.fieldsets.find(fieldset => fieldset.id == fieldsetId);
     console.log(options);
@@ -37,6 +37,13 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
     const onSelectOption = (i) => {
         setSelectedOption(i);
         setSelectTitle(options[selectedOption].title);
+    }
+
+    const [checked, setChecked] = useState(false);
+
+    const onToggle = () => {
+        setChecked(!checked);
+        setToggleEvent();
     }
 
     function generateFieldTag(inputType, id, name, type, mask, placeholder, required, valid, options, toggle, fieldsetName, items, matches, check) {
@@ -86,7 +93,7 @@ function Field({ inputType, id, name, label, required, type, mask, placeholder, 
                     'form__agree': name === 'agree',
                     'form__check--align-center': matches
                 })}>
-                    <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} />
+                    <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} onChange={matches && onToggle} />
                     <span class="check-style"></span>
                     {fieldsetType === 'checks' &&
                         <div class="check-title">
