@@ -77,24 +77,28 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
 
     console.log(items);
 
-    const onChangeField = (e, stateVal, setInputValue, index) => {
+    let val;
+    const onChangeField = (e, stateVal, setInputValue, checkedIndex, setInputTitle) => {
+        console.log(checkedIndex);
         /* if (e.target.value.length > 0) {
             setValidField(true);
         } else {
             setValidField(false);
         } */
 
-        let val;
-
         if (inputType === 'radio') {
-            val = items[index];
-            console.log(val);
+            setInputValue(checkedIndex);
+            val = items[checkedIndex];
+        } else if (inputType === 'select') {
+            setInputValue(checkedIndex);
+            val = options[checkedIndex].title;
+            setInputTitle(val);
         } else {
             val = e.target.value;
+            setInputValue(val);
         }
 
         console.log(val);
-        setInputValue(val);
         localStorage.setItem(name, val);
 
         data = [
@@ -119,7 +123,7 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
 
         data[currentStep].fieldsets[fieldset].fields[fieldIndex] = {
             ...data[currentStep].fieldsets[fieldset].fields[fieldIndex],
-            value: stateVal
+            value: val
         };
 
         /* if (val === '') {
@@ -137,7 +141,7 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
             case 'input':
                 return <Input id={id} name={name} type={type} mask={mask} placeholder={placeholder} required={required} valid={valid} fieldsetName={fieldsetName} isToggle={isToggle} currentStep={currentStep} data={data} fieldset={fieldset} fieldIndex={fieldIndex} setFormData={setFormData} formData={formData} onChangeField={onChangeField} inputType={inputType} textfield={textfield} />
             case 'select':
-                return <Select name={name} options={options} id={id} isToggle={isToggle} fieldsetName={fieldsetName} />
+                return <Select data={data} currentStep={currentStep} name={name} options={options} id={id} isToggle={isToggle} fieldsetName={fieldsetName} onChangeField={onChangeField} fieldset={fieldset} fieldIndex={fieldIndex} selectTitle={val} />
             case 'checkbox':
                 return <Checkbox fieldsetName={fieldsetName} fieldsetType={fieldsetType} matches={matches} name={name} onToggle={onToggle} check={check} />
             case 'radio':

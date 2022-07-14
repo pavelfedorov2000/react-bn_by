@@ -3,9 +3,12 @@ import classNames from 'classnames';
 import SlideToggle from "react-slide-toggle";
 import Option from './Option';
 
-function Select({ name, isToggle, options, fieldsetName, id }) {
+function Select({ name, isToggle, options, fieldsetName, id, onChangeField }) {
 
-    const [selectTitle, setSelectTitle] = useState(options[0].title);
+    //console.log(options);
+    const storageValue = localStorage.getItem(name);
+    console.log(storageValue);
+    const [selectTitle, setSelectTitle] = useState(storageValue || options[0].title);
 
     return (
         <SlideToggle collapsed={true}
@@ -14,13 +17,13 @@ function Select({ name, isToggle, options, fieldsetName, id }) {
                     'select--price': name === 'tariff'
                 })}>
                     <div className="select__title" onClick={toggle}>
-                        <span className={name === 'tariff' ? `${name}-name` : null}>{selectTitle || options[0].title}</span>
+                        <span className={name === 'tariff' ? `${name}-name` : null}>{selectTitle}</span>
                         {name === 'tariff' && <span className={`${name}-price`}></span>}
                     </div>
                     <div className="select__content" ref={setCollapsibleElement}>
                         <div className="select__content-inner">
                             {options.map((option, i) => (
-                                <Option id={id} options={options} option={option} i={i} name={name} isToggle={isToggle} fieldsetName={fieldsetName} setSelectTitle={setSelectTitle} />
+                                <Option id={id} options={options} option={option} i={i} name={name} isToggle={isToggle} fieldsetName={fieldsetName} setSelectTitle={setSelectTitle} onChangeField={onChangeField} />
                             ))}
                         </div>
                     </div>

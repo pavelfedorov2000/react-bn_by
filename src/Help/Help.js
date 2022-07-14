@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import React from 'react';
 
-function Help() {
+function Help({ className }) {
     return (
-        <div className="help">
+        <div className={classNames('help', className)}>
             <div className="help__title">Нужна помощь?</div>
             <a href="tel:174" className="help__call">
                 <img className="help__icon" src="img/call.svg" alt="иконка телефона" />

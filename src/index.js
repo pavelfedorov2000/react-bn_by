@@ -770,10 +770,11 @@ function App() {
                                 <div className="form-page__aside">
                                     <h1 className="form-page__title">Заявление на подключение</h1>
                                     <AsideText currentStep={currentStep} />
-                                    <Help />
+                                    <Help className="form-page__aside-help" />
                                 </div>
                                 <div className="form-page__content">
                                     <Nav steps={formData} currentStep={currentStep} showStep={showStep} />
+                                    <AsideText currentStep={currentStep} />
                                     <div className="form__body">
                                         <Step data={formData} step={visibleStep} currentStep={currentStep} formData={formData} setFormData={setFormData} />
                                     </div>
@@ -781,7 +782,7 @@ function App() {
                                         {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
                                         <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" disabled={visibleStep.valid ? true : false} />
                                     </div>
-                                    <AsideText currentStep={currentStep} />
+                                    <Help className="form-page__bottom-help" />
                                 </div>
                             </div>
                         </div>
