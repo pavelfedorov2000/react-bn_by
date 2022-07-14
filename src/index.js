@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import AsideText from './AsideText/AsideText';
 import './base/_general.scss';
@@ -23,6 +23,7 @@ function App() {
                     title: 'Ваши контакты',
                     fields: [
                         {
+                            id: 0,
                             inputType: 'input',
                             label: 'Фамилия',
                             name: 'surname',
@@ -31,6 +32,7 @@ function App() {
                             //valid: false,
                         },
                         {
+                            id: 1,
                             inputType: 'input',
                             label: 'Имя',
                             name: 'name',
@@ -39,6 +41,7 @@ function App() {
                             //valid: false,
                         },
                         {
+                            id: 2,
                             inputType: 'input',
                             label: 'Отчество',
                             name: 'patronymic',
@@ -47,6 +50,7 @@ function App() {
                             //valid: false,
                         },
                         {
+                            id: 3,
                             inputType: 'input',
                             type: 'tel',
                             label: 'Номер телефона',
@@ -57,6 +61,7 @@ function App() {
                             //valid: false,
                         },
                         {
+                            id: 4,
                             inputType: 'input',
                             type: 'email',
                             label: 'Адрес электронной почты',
@@ -80,6 +85,7 @@ function App() {
                     title: 'Тарифный план',
                     fields: [
                         {
+                            id: 0,
                             inputType: 'select',
                             label: 'Выберите тарифный план',
                             id: 'tariff',
@@ -100,7 +106,8 @@ function App() {
                                     title: 'Мой бизнес PRO 80',
                                     price: '25,50 руб./мес.'
                                 }
-                            ]
+                            ],
+                            value: '',
                         }
                     ]
                 },
@@ -110,6 +117,7 @@ function App() {
                     type: 'checks',
                     fields: [
                         {
+                            id: 0,
                             inputType: 'checkbox',
                             name: 'additional_service',
                             items: [
@@ -139,6 +147,7 @@ function App() {
                             inputType: 'input',
                             label: 'Индекс',
                             name: 'index',
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -158,7 +167,8 @@ function App() {
                                 {
                                     title: "Область 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -178,7 +188,8 @@ function App() {
                                 {
                                     title: "Тип населенного пункта 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -198,7 +209,8 @@ function App() {
                                 {
                                     title: "Населенный пункт 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -218,7 +230,8 @@ function App() {
                                 {
                                     title: "Тип улицы 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -239,6 +252,7 @@ function App() {
                                     title: "Улица 3"
                                 },
                             ],
+                            value: '',
                             checkbox: "В адресе улицы отсутствует название улицы"
                         },
                         {
@@ -246,12 +260,14 @@ function App() {
                             size: "small",
                             label: 'Дом',
                             name: 'home',
+                            value: '',
                         },
                         {
                             inputType: 'input',
                             size: "small",
                             label: 'Корпус / строение',
                             name: 'corpus',
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -270,7 +286,8 @@ function App() {
                                 {
                                     title: "Тип помещения 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
                             inputType: 'select',
@@ -290,13 +307,16 @@ function App() {
                                     title: "Помещение 3"
                                 },
                             ],
+                            value: '',
                             checkbox: "Это единое строение, помещения нет"
                         },
                         {
-                            inputType: 'textarea',
+                            inputType: 'input',
+                            textfield: true,
                             label: 'Комментарий по адресу',
                             name: 'address_comment',
-                            placeholder: 'Например: 3 этаж, справа от входа'
+                            placeholder: 'Например: 3 этаж, справа от входа',
+                            value: '',
                         },
                     ]
                 }
@@ -311,12 +331,15 @@ function App() {
                     id: 0,
                     fields: [
                         {
+                            id: 0,
                             inputType: 'radio',
                             label: 'Являетесь ли Вы резидентом Республики Беларусь?',
                             name: 'resident',
                             items: ['Да', 'Нет'],
+                            value: '',
                         },
                         {
+                            id: 1,
                             inputType: 'select',
                             label: 'Вид документа',
                             id: 'document',
@@ -331,9 +354,11 @@ function App() {
                                 {
                                     title: "Удостоверение",
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 2,
                             inputType: 'select',
                             label: 'Гражданство',
                             id: 'nationality',
@@ -352,54 +377,69 @@ function App() {
                                 {
                                     title: "Конго",
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 3,
                             inputType: 'radio',
                             label: 'Есть ли у вас временная регистрация?',
                             name: 'temporary_registration',
                             hidden: true,
                             items: ['Да', 'Нет'],
+                            value: '',
                         },
                         {
+                            id: 4,
                             inputType: 'input',
                             label: 'Серия',
                             name: 'passport_series',
+                            value: '',
                         },
                         {
+                            id: 5,
                             inputType: 'input',
                             label: 'Номер паспорта',
                             name: 'passport_num',
+                            value: '',
                         },
                         {
+                            id: 6,
                             inputType: 'input',
                             label: 'Дата выдачи паспорта',
                             name: 'passport_from',
                             placeholder: '01.01.2001',
+                            value: '',
                         },
                         {
+                            id: 7,
                             inputType: 'input',
                             label: 'Срок действия паспорта',
                             name: 'passport_to',
                             placeholder: '01.01.2001',
+                            value: '',
                         },
                         {
+                            id: 8,
                             inputType: 'input',
                             label: 'Идентификационный номер',
                             name: 'identification_number',
+                            value: '',
                         },
                         {
+                            id: 9,
                             inputType: 'input',
                             label: 'Кем выдан паспорт',
                             name: 'passport_issued_by',
-                            placeholder: 'Октябрьским РОВД'
+                            placeholder: 'Октябрьским РОВД',
+                            value: '',
                         }
                     ]
                 },
                 {
                     id: 1,
                     title: 'Адрес регистрации',
-                    toggle: true,
+                    isToggle: true,
                     name: "registration",
                     checkbox: {
                         inputType: 'checkbox',
@@ -412,11 +452,14 @@ function App() {
                     },
                     fields: [
                         {
+                            id: 0,
                             inputType: 'input',
                             label: 'Индекс',
                             name: 'index',
+                            value: '',
                         },
                         {
+                            id: 1,
                             inputType: 'select',
                             label: 'Область',
                             id: 'region',
@@ -434,9 +477,11 @@ function App() {
                                 {
                                     title: "Область 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 2,
                             inputType: 'select',
                             label: 'Тип населенного пункта',
                             id: 'localityType',
@@ -454,9 +499,11 @@ function App() {
                                 {
                                     title: "Тип населенного пункта 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 3,
                             inputType: 'select',
                             label: 'Населенный пункт',
                             id: 'locality',
@@ -474,9 +521,11 @@ function App() {
                                 {
                                     title: "Населенный пункт 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 4,
                             inputType: 'select',
                             label: 'Тип улицы',
                             id: 'streetType',
@@ -494,9 +543,11 @@ function App() {
                                 {
                                     title: "Тип улицы 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 5,
                             inputType: 'select',
                             label: 'Улица',
                             id: 'street',
@@ -515,21 +566,27 @@ function App() {
                                     title: "Улица 3"
                                 },
                             ],
+                            value: '',
                             checkbox: "В адресе улицы отсутствует название улицы"
                         },
                         {
+                            id: 6,
                             inputType: 'input',
                             size: "small",
                             label: 'Дом',
                             name: 'home',
+                            value: '',
                         },
                         {
+                            id: 7,
                             inputType: 'input',
                             size: "small",
                             label: 'Корпус / строение',
                             name: 'corpus',
+                            value: '',
                         },
                         {
+                            id: 8,
                             inputType: 'select',
                             label: 'Тип помещения',
                             id: 'roomType',
@@ -547,9 +604,11 @@ function App() {
                                 {
                                     title: "Тип помещения 3"
                                 },
-                            ]
+                            ],
+                            value: '',
                         },
                         {
+                            id: 9,
                             inputType: 'select',
                             label: 'Помещение',
                             id: 'room',
@@ -568,12 +627,15 @@ function App() {
                                     title: "Помещение 3"
                                 },
                             ],
+                            value: '',
                             checkbox: "Это единое строение, помещения нет"
                         },
                         {
-                            inputType: 'textarea',
+                            id: 10,
+                            inputType: 'input',
                             label: 'Комментарий по адресу',
                             name: 'address_comment',
+                            value: '',
                         },
                     ]
                 },
@@ -582,6 +644,7 @@ function App() {
                     title: 'Ваш менеджер',
                     fields: [
                         {
+                            id: 0,
                             inputType: 'select',
                             label: 'Помещение',
                             id: 'yourManager',
@@ -597,6 +660,7 @@ function App() {
                                     title: "Нет",
                                 },
                             ],
+                            value: '',
                         }
                     ]
                 },
@@ -605,8 +669,11 @@ function App() {
                     title: 'Иные пожелания',
                     fields: [
                         {
-                            inputType: 'textarea',
+                            id: 0,
+                            inputType: 'input',
+                            textfield: true,
                             name: 'other_wishes',
+                            value: '',
                         }
                     ]
                 },
@@ -614,6 +681,7 @@ function App() {
                     id: 4,
                     fields: [
                         {
+                            id: 0,
                             inputType: 'checkbox',
                             name: 'agree',
                             items: [
@@ -628,35 +696,74 @@ function App() {
         },
     ];
 
-    const [formData, setFormData] = useState(data);
-    //console.log(formData);
-    const [currentStep, setCurrentStep] = useState(2);
-    //console.log(currentStep);
-    const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
+    /* let storageStep;
+    useEffect(() => {
+        // storing input name
+        localStorage.getItem('step');
+    }, [storageStep]);
+
+    console.log(storageStep); */
+
+    const storageData = JSON.parse(localStorage.getItem('data'));
+    const [formData, setFormData] = useState(storageData || data);
+    const [currentStep, setCurrentStep] = useState(localStorage.getItem('step') || 0);
+    console.log(+currentStep);
+    //const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
     //console.log(visibleStep);
+    const visibleStep = formData.find(step => step.id == currentStep);
+    console.log(visibleStep);
 
-    let step;
 
+    let step = currentStep;
     const prevStep = () => {
-        step = +currentStep - 1;
+        step -= 1;
         setCurrentStep(step);
-        const stepObj = data.find(step => step.id == step);
-        setVisibleStep(stepObj);
+        localStorage.setItem('step', step);
+        window.scrollTo(0, 0);
     }
 
     const nextStep = () => {
-        step = +currentStep + 1;
+        step += 1;
         setCurrentStep(step);
-        console.log(step);
-        const stepObj = data.find(step => step.id == step);
-        setVisibleStep(stepObj);
-        console.log(visibleStep);
+        localStorage.setItem('step', step);
+        window.scrollTo(0, 0);
+    }
+
+    const showStep = (index) => {
+        step = index;
+        setCurrentStep(step);
+        localStorage.setItem('step', step);
+        window.scrollTo(0, 0);
+    }
+
+    /* function navScroll(btn, i) {
+        if (window.innerWidth < 575) {
+            if (i == 0) {
+                nav.scrollTo({
+                    left: 0,
+                    behavior: 'smooth',
+                });
+            }
+            if (i == steps.length - 1) {
+                nav.scrollTo({
+                    left: navWidth - btn.offsetLeft,
+                    behavior: 'smooth',
+                });
+            }
+        }
+    } */
+
+    const preventFormSubmit = (e) => {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
     }
 
     return (
         <div className="wrapper">
             <main className="page">
-                <form id="physical_form" action="#" className="form-page">
+                <form onKeyDown={preventFormSubmit} id="physical_form" action="#" className="form-page">
                     <div className="steps">
                         <div className="_container">
                             <div className="form-page__inner">
@@ -666,13 +773,13 @@ function App() {
                                     <Help />
                                 </div>
                                 <div className="form-page__content">
-                                    <Nav steps={formData} currentStep={currentStep} />
+                                    <Nav steps={formData} currentStep={currentStep} showStep={showStep} />
                                     <div className="form__body">
-                                        <Step data={formData} step={visibleStep} currentStep={currentStep} />
+                                        <Step data={formData} step={visibleStep} currentStep={currentStep} formData={formData} setFormData={setFormData} />
                                     </div>
                                     <div className="form__buttons">
                                         {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
-                                        <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" disabled={currentStep.valid ? true : false} />
+                                        <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" disabled={visibleStep.valid ? true : false} />
                                     </div>
                                     <AsideText currentStep={currentStep} />
                                 </div>
