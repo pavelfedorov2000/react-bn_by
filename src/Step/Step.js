@@ -6,8 +6,10 @@ function Step({ step, data, currentStep, setFormData, formData }) {
 
     const [toggleEvent, setToggleEvent] = useState(true);
 
+    console.log(step);
+
     return (
-        step.fieldsets.map((fieldset, index) => (
+        step !== 'result' && step.fieldsets.map((fieldset, index) => (
             fieldset.isToggle ?
                 <SlideToggle
                     collapsed={true}

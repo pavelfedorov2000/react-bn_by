@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Option({ isToggle, fieldsetName, id, options, option, i, name, onChangeField, setSelectTitle }) {
+function Option({ isToggle, fieldsetName, id, options, option, i, name, onChangeField, setSelectTitle, setToggleSelect }) {
     //, setSelectTitle, selectTitle, onChangeField
     //console.log(options);
     const storageValue = localStorage.getItem(name);
@@ -13,6 +13,7 @@ function Option({ isToggle, fieldsetName, id, options, option, i, name, onChange
     const handleChangeInput = (e) => {
         console.log(selectedOption);
         onChangeField(e, options[selectedOption], setSelectedOption, i, setSelectTitle);
+        setToggleSelect(false);
     }
 
     return (

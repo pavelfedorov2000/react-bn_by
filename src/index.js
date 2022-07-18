@@ -5,6 +5,7 @@ import './base/_general.scss';
 import Button from './Button/Button';
 import Help from './Help/Help';
 import Nav from './Nav/Nav';
+import Result from './Result/Result';
 import Step from './Step/Step';
 
 function App() {
@@ -133,7 +134,8 @@ function App() {
                                     price: '4,20р. /Мес.',
                                     text: 'Позволяет присвоить абоненту постоянный IP-адрес. Для выхода в интернет этот адрес не используется.'
                                 }
-                            ]
+                            ],
+                            value: '',
                         }
                     ]
                 },
@@ -147,6 +149,7 @@ function App() {
                             inputType: 'input',
                             label: 'Индекс',
                             name: 'index',
+                            mask: '999999',
                             value: '',
                         },
                         {
@@ -409,6 +412,7 @@ function App() {
                             label: 'Дата выдачи паспорта',
                             name: 'passport_from',
                             placeholder: '01.01.2001',
+                            mask: '99.99.9999',
                             value: '',
                         },
                         {
@@ -417,6 +421,7 @@ function App() {
                             label: 'Срок действия паспорта',
                             name: 'passport_to',
                             placeholder: '01.01.2001',
+                            mask: '99.99.9999',
                             value: '',
                         },
                         {
@@ -707,23 +712,24 @@ function App() {
     const storageData = JSON.parse(localStorage.getItem('data'));
     const [formData, setFormData] = useState(storageData || data);
     const [currentStep, setCurrentStep] = useState(localStorage.getItem('step') || 0);
+    //localStorage.getItem('step') || 0
     console.log(+currentStep);
     //const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
     //console.log(visibleStep);
-    const visibleStep = formData.find(step => step.id == currentStep);
+    let visibleStep = currentStep !== 'result' ? formData.find(step => step.id == currentStep) : 'result';
     console.log(visibleStep);
 
 
-    let step = currentStep;
+    let step = currentStep !== 'result' && currentStep;
     const prevStep = () => {
-        step -= 1;
+        step = +step - 1;
         setCurrentStep(step);
         localStorage.setItem('step', step);
         window.scrollTo(0, 0);
     }
 
     const nextStep = () => {
-        step += 1;
+        step = +step + 1;
         setCurrentStep(step);
         localStorage.setItem('step', step);
         window.scrollTo(0, 0);
@@ -731,6 +737,20 @@ function App() {
 
     const showStep = (index) => {
         step = index;
+        setCurrentStep(step);
+        localStorage.setItem('step', step);
+        window.scrollTo(0, 0);
+    }
+
+    const generateResult = () => {
+        step = 'result';
+        setCurrentStep(step);
+        localStorage.setItem('step', step);
+        window.scrollTo(0, 0);
+    }
+
+    const editForm = () => {
+        step = 0;
         setCurrentStep(step);
         localStorage.setItem('step', step);
         window.scrollTo(0, 0);
@@ -764,34 +784,45 @@ function App() {
         <div className="wrapper">
             <main className="page">
                 <form onKeyDown={preventFormSubmit} id="physical_form" action="#" className="form-page">
-                    <div className="steps">
-                        <div className="_container">
-                            <div className="form-page__inner">
-                                <div className="form-page__aside">
-                                    <h1 className="form-page__title">Заявление на подключение</h1>
-                                    <AsideText currentStep={currentStep} />
-                                    <Help className="form-page__aside-help" />
-                                </div>
-                                <div className="form-page__content">
-                                    <Nav steps={formData} currentStep={currentStep} showStep={showStep} />
-                                    <AsideText currentStep={currentStep} />
-                                    <div className="form__body">
-                                        <Step data={formData} step={visibleStep} currentStep={currentStep} formData={formData} setFormData={setFormData} />
+                    {
+                        visibleStep === 'result' ?
+                            <Result data={formData} editForm={editForm} />
+                            :
+                            <div className="steps">
+                                <div className="_container">
+                                    <div className="form-page__inner">
+                                        <div className="form-page__aside">
+                                            <h1 className="form-page__title">Заявление на подключение</h1>
+                                            <AsideText currentStep={currentStep} />
+                                            <Help className="form-page__aside-help" />
+                                        </div>
+                                        <div className="form-page__content">
+                                            <Nav steps={formData} currentStep={currentStep} showStep={showStep} />
+                                            <AsideText currentStep={currentStep} />
+                                            <div className="form__body">
+                                                <Step data={formData} step={visibleStep} currentStep={currentStep} formData={formData} setFormData={setFormData} />
+                                            </div>
+                                            <div className="form__buttons">
+                                                {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
+                                                {currentStep == formData.length - 1 ?
+                                                    <Button onClick={generateResult} className="next-btn" type="button" text="К результату" />
+                                                    :
+                                                    <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" />
+                                                }
+                                            </div>
+                                            <Help className="form-page__bottom-help" />
+                                        </div>
                                     </div>
-                                    <div className="form__buttons">
-                                        {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
-                                        <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" disabled={visibleStep.valid ? true : false} />
-                                    </div>
-                                    <Help className="form-page__bottom-help" />
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                    }
                 </form>
             </main>
         </div>
     );
 }
+
+//disabled={visibleStep.valid ? true : false}
 
 export default App;
 

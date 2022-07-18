@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 
-function Checkbox({ fieldsetName, fieldsetType, name, matches, onToggle, check }) {
+function Checkbox({ fieldsetName, fieldsetType, name, matches, onToggle, check, onChangeField }) {
+
+    //const storageValue = localStorage.getItem(name);
+    //const checkedParam = items.indexOf(storageValue);
+    //console.log(checkedParam);
+    const [checkedItems, setCheckedItems] = useState([]);
+    console.log(checkedItems);
+    /* const onCheckRadio = () => {
+        setRadioValue(i);
+        console.log(radioValue);
+    } */
+
+    const handleCheckCheckbox = (e) => {
+        let newItems;
+        if (check) {
+            newItems = [...checkedItems];
+            newItems.push(`${check.title}: ${check.price}`);
+        }
+        if (matches) {
+            onToggle();
+        }
+        setCheckedItems(newItems);
+        console.log(checkedItems);
+        onChangeField(e, checkedItems, setCheckedItems);
+    }
+
     return (
         <label key={fieldsetType === 'checks' && check.id} class={classNames('form__check', {
             'form__agree': name === 'agree',
             'form__check--align-center': matches
         })}>
-            <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} onChange={onToggle} />
+            <input class="check-box" type="checkbox" name={matches ? `${fieldsetName}_address_matches` : name} onChange={handleCheckCheckbox} />
             <span class="check-style"></span>
             {fieldsetType === 'checks' &&
                 <div class="check-title">

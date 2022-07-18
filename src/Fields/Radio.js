@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 function Radio({ radio, name, i, onChangeField, items }) {
 
-    console.log(i);
+    //console.log(i);
 
     const storageValue = localStorage.getItem(name);
-    const checkedIndex = items.indexOf(storageValue);
-    console.log(checkedIndex);
-    const [radioChecked, setRadioChecked] = useState(null || (checkedIndex != -1 && storageValue));
+    const checkedParam = items.indexOf(storageValue);
+    console.log(checkedParam);
+    const [radioChecked, setRadioChecked] = useState(null || (checkedParam != -1 && storageValue));
     console.log(radioChecked);
     const [radioValue, setRadioValue] = useState('');
     /* const onCheckRadio = () => {

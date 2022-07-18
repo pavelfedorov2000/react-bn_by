@@ -78,8 +78,8 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
     console.log(items);
 
     let val;
-    const onChangeField = (e, stateVal, setInputValue, checkedIndex, setInputTitle) => {
-        console.log(checkedIndex);
+    const onChangeField = (e, stateVal, setInputValue, checkedParam, setInputTitle) => {
+        console.log(checkedParam);
         /* if (e.target.value.length > 0) {
             setValidField(true);
         } else {
@@ -87,12 +87,18 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
         } */
 
         if (inputType === 'radio') {
-            setInputValue(checkedIndex);
-            val = items[checkedIndex];
+            setInputValue(checkedParam);
+            val = items[checkedParam];
         } else if (inputType === 'select') {
-            setInputValue(checkedIndex);
-            val = options[checkedIndex].title;
+            setInputValue(checkedParam);
+            val = options[checkedParam].title;
             setInputTitle(val);
+        } else if (inputType === 'checkbox') {
+            if (fieldsetType === 'checks') {
+                val = [...stateVal];
+                //val.push(`${items[checkedIndex].title}: ${items[checkedIndex].price}`);
+            }
+            setInputValue(val);
         } else {
             val = e.target.value;
             setInputValue(val);

@@ -9,6 +9,11 @@ function Select({ name, isToggle, options, fieldsetName, id, onChangeField }) {
     const storageValue = localStorage.getItem(name);
     console.log(storageValue);
     const [selectTitle, setSelectTitle] = useState(storageValue || options[0].title);
+    const [toggleSelect, setToggleSelect] = useState(false);
+
+    const handleSelectToggle = () => {
+        setToggleSelect(!toggleSelect);
+    }
 
     return (
         <SlideToggle collapsed={true}
@@ -23,7 +28,7 @@ function Select({ name, isToggle, options, fieldsetName, id, onChangeField }) {
                     <div className="select__content" ref={setCollapsibleElement}>
                         <div className="select__content-inner">
                             {options.map((option, i) => (
-                                <Option id={id} options={options} option={option} i={i} name={name} isToggle={isToggle} fieldsetName={fieldsetName} setSelectTitle={setSelectTitle} onChangeField={onChangeField} />
+                                <Option id={id} options={options} option={option} i={i} name={name} isToggle={isToggle} fieldsetName={fieldsetName} setSelectTitle={setSelectTitle} onChangeField={onChangeField} setToggleSelect={setToggleSelect} />
                             ))}
                         </div>
                     </div>
