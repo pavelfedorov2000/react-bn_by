@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import SlideToggle from "react-slide-toggle";
+import { FormContext } from '../context';
 import Field from '../Field/Field';
 
-function Step({ step, data, currentStep, setFormData, formData }) {
+function Step({ setFormData, formData }) {
+
+    const { visibleStep } = useContext(FormContext);
 
     const [toggleEvent, setToggleEvent] = useState(true);
 
-    console.log(step);
+    console.log(visibleStep);
 
     return (
-        step !== 'result' && step.fieldsets.map((fieldset, index) => (
+        visibleStep !== 'result' && visibleStep.fieldsets.map((fieldset, index) => (
             fieldset.isToggle ?
                 <SlideToggle
                     collapsed={true}
@@ -20,12 +23,12 @@ function Step({ step, data, currentStep, setFormData, formData }) {
                                 {fieldset.isToggle && <span className="form__legend-drop"></span>}
                             </legend>
                             <div ref={setCollapsibleElement}>
-                                <Field data={data} {...fieldset.checkbox} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} setToggleEvent={setToggleEvent} setFormData={setFormData} formData={formData} />
+                                <Field {...fieldset.checkbox} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} setToggleEvent={setToggleEvent} setFormData={setFormData} />
                                 {toggleEvent &&
                                     <div className="form__fields">
                                         {
                                             fieldset.fields.map((field, i) => (
-                                                <Field key={field.name} data={data} {...field} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} setFormData={setFormData} formData={formData} />
+                                                <Field key={field.name}  {...field} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} setFormData={setFormData} />
                                             ))
                                         }
                                     </div>
@@ -45,7 +48,7 @@ function Step({ step, data, currentStep, setFormData, formData }) {
                     <>
                         {
                             fieldset.fields.map((field, i) => (
-                                <Field key={field.id} currentStep={currentStep} fieldset={index} fieldIndex={i} step={step} data={data} field={field} {...field} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} />
+                                <Field key={field.id} fieldset={index} fieldIndex={i} field={field} {...field} fieldsetType={fieldset.type} isToggle={fieldset.isToggle} fieldsetName={fieldset.name} />
                             ))
                         }
                     </>

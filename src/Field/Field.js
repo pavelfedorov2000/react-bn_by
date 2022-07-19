@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import classNames from 'classnames';
 import { useEffect } from 'react/cjs/react.development';
-
 import SlideToggle from "react-slide-toggle";
 import Input from '../Fields/Input';
 import Textarea from '../Fields/Textarea';
 import Radio from '../Fields/Radio';
 import Select from '../Fields/Select';
 import Checkbox from '../Fields/Checkbox';
+import { FormContext } from '../context';
 //import MaterialInput from '@material-ui/core/Input';
 
 /* const required = (value) => {
@@ -28,7 +28,11 @@ const email = (value) => {
     localStorage.setItem("name", JSON.stringify(name));
 }, [name]); */
 
-function Field({ data, field, step, currentStep, fieldset, inputType, id, name, label, required, type, mask, placeholder, valid, options, isToggle, fieldsetName, fieldsetType, items, matches, setToggleEvent, size, hidden, fieldIndex, setFormData, formData, textfield }) {
+function Field({ field, fieldset, inputType, id, name, label, required, type, mask, placeholder, valid, options, isToggle, fieldsetName, fieldsetType, items, matches, setToggleEvent, size, hidden, fieldIndex, setFormData, textfield }) {
+
+    const { formData, currentStep, visibleStep } = useContext(FormContext);
+
+    let data = [...formData];
 
     //console.log(field && field);
     //const fieldset = step.fieldsets.find(fieldset => fieldset.id == fieldsetId);
@@ -78,7 +82,7 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
     console.log(items);
 
     let val;
-    const onChangeField = (e, stateVal, setInputValue, checkedParam, setInputTitle) => {
+    const onChangeField = (e, setInputValue, checkedParam, checked) => {
         console.log(checkedParam);
         /* if (e.target.value.length > 0) {
             setValidField(true);
@@ -92,13 +96,17 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
         } else if (inputType === 'select') {
             setInputValue(checkedParam);
             val = options[checkedParam].title;
-            setInputTitle(val);
+            //setInputTitle(val);
         } else if (inputType === 'checkbox') {
             if (fieldsetType === 'checks') {
-                val = [...stateVal];
-                //val.push(`${items[checkedIndex].title}: ${items[checkedIndex].price}`);
+                val = [];
+                if (checked === null) {
+                    val.splice(checkedParam, 1);
+                } else {
+                    val.push(`${items[checkedParam].title}: ${items[checkedParam].price}`);
+                }
             }
-            setInputValue(val);
+            setInputValue(checkedParam);
         } else {
             val = e.target.value;
             setInputValue(val);
@@ -141,15 +149,15 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
         console.log(data);
     }
 
-    function generateFieldTag(inputType, check) {
+    function generateFieldTag(inputType, check, i) {
 
         switch (inputType) {
             case 'input':
-                return <Input id={id} name={name} type={type} mask={mask} placeholder={placeholder} required={required} valid={valid} fieldsetName={fieldsetName} isToggle={isToggle} currentStep={currentStep} data={data} fieldset={fieldset} fieldIndex={fieldIndex} setFormData={setFormData} formData={formData} onChangeField={onChangeField} inputType={inputType} textfield={textfield} />
+                return <Input id={id} name={name} type={type} mask={mask} placeholder={placeholder} required={required} valid={valid} fieldsetName={fieldsetName} isToggle={isToggle} fieldset={fieldset} fieldIndex={fieldIndex} setFormData={setFormData} onChangeField={onChangeField} inputType={inputType} textfield={textfield} />
             case 'select':
-                return <Select data={data} currentStep={currentStep} name={name} options={options} id={id} isToggle={isToggle} fieldsetName={fieldsetName} onChangeField={onChangeField} fieldset={fieldset} fieldIndex={fieldIndex} selectTitle={val} />
+                return <Select name={name} options={options} id={id} isToggle={isToggle} fieldsetName={fieldsetName} onChangeField={onChangeField} fieldset={fieldset} fieldIndex={fieldIndex} selectTitle={val} />
             case 'checkbox':
-                return <Checkbox fieldsetName={fieldsetName} fieldsetType={fieldsetType} matches={matches} name={name} onToggle={onToggle} check={check} />
+                return <Checkbox fieldsetName={fieldsetName} fieldsetType={fieldsetType} matches={matches} name={name} onToggle={onToggle} check={check} index={i} onChangeField={onChangeField} />
             case 'radio':
                 return <div className="form__radios">
                     {items.map((radio, i) => (
@@ -164,8 +172,8 @@ function Field({ data, field, step, currentStep, fieldset, inputType, id, name, 
     return (
         fieldsetType === 'checks' ?
             <div className="form__checks">
-                {items.map(check => (
-                    generateFieldTag(inputType, check)
+                {items.map((check, i) => (
+                    generateFieldTag(inputType, check, i)
                 ))}
             </div>
             :

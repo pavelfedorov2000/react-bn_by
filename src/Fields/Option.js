@@ -12,7 +12,7 @@ function Option({ isToggle, fieldsetName, id, options, option, i, name, onChange
 
     const handleChangeInput = (e) => {
         console.log(selectedOption);
-        onChangeField(e, options[selectedOption], setSelectedOption, i, setSelectTitle);
+        onChangeField(e, setSelectedOption, i, setSelectTitle);
         setToggleSelect(false);
     }
 

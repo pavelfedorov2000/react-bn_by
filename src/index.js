@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import Aside from './Aside/Aside';
 import AsideText from './AsideText/AsideText';
 import './base/_general.scss';
 import Button from './Button/Button';
+import { FormContext } from './context';
 import Help from './Help/Help';
 import Nav from './Nav/Nav';
 import Result from './Result/Result';
@@ -701,17 +703,15 @@ function App() {
         },
     ];
 
-    /* let storageStep;
-    useEffect(() => {
+    /* useEffect(() => {
         // storing input name
-        localStorage.getItem('step');
-    }, [storageStep]);
-
-    console.log(storageStep); */
+        storageStep = localStorage.getItem('step');
+    }, [currentStep]); */
 
     const storageData = JSON.parse(localStorage.getItem('data'));
-    const [formData, setFormData] = useState(storageData || data);
     const [currentStep, setCurrentStep] = useState(localStorage.getItem('step') || 0);
+    const [formData, setFormData] = useState(storageData || data);
+
     //localStorage.getItem('step') || 0
     console.log(+currentStep);
     //const [visibleStep, setVisibleStep] = useState(formData[currentStep]);
@@ -781,44 +781,46 @@ function App() {
     }
 
     return (
-        <div className="wrapper">
-            <main className="page">
-                <form onKeyDown={preventFormSubmit} id="physical_form" action="#" className="form-page">
-                    {
-                        visibleStep === 'result' ?
-                            <Result data={formData} editForm={editForm} />
-                            :
-                            <div className="steps">
-                                <div className="_container">
-                                    <div className="form-page__inner">
-                                        <div className="form-page__aside">
-                                            <h1 className="form-page__title">Заявление на подключение</h1>
-                                            <AsideText currentStep={currentStep} />
-                                            <Help className="form-page__aside-help" />
-                                        </div>
-                                        <div className="form-page__content">
-                                            <Nav steps={formData} currentStep={currentStep} showStep={showStep} />
-                                            <AsideText currentStep={currentStep} />
-                                            <div className="form__body">
-                                                <Step data={formData} step={visibleStep} currentStep={currentStep} formData={formData} setFormData={setFormData} />
+        <FormContext.Provider value={{
+            formData,
+            currentStep,
+            visibleStep
+        }}>
+            <div className="wrapper">
+                <main className="page">
+                    <form onKeyDown={preventFormSubmit} id="physical_form" action="#" className="form-page">
+                        {
+                            visibleStep === 'result' ?
+                                <Result data={formData} editForm={editForm} />
+                                :
+                                <div className="steps">
+                                    <div className="_container">
+                                        <div className="form-page__inner">
+                                            <Aside currentStep={currentStep} />
+                                            <div className="form-page__content">
+                                                <Nav showStep={showStep} />
+                                                <AsideText currentStep={currentStep} />
+                                                <div className="form__body">
+                                                    <Step setFormData={setFormData} />
+                                                </div>
+                                                <div className="form__buttons">
+                                                    {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
+                                                    {currentStep == formData.length - 1 ?
+                                                        <Button onClick={generateResult} className="next-btn" type="button" text="К результату" />
+                                                        :
+                                                        <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" />
+                                                    }
+                                                </div>
+                                                <Help className="form-page__bottom-help" />
                                             </div>
-                                            <div className="form__buttons">
-                                                {currentStep != 0 && <Button onClick={prevStep} className="back-btn" border type="button" text="Назад" />}
-                                                {currentStep == formData.length - 1 ?
-                                                    <Button onClick={generateResult} className="next-btn" type="button" text="К результату" />
-                                                    :
-                                                    <Button onClick={nextStep} className="next-btn" type="button" text="Продолжить" />
-                                                }
-                                            </div>
-                                            <Help className="form-page__bottom-help" />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                    }
-                </form>
-            </main>
-        </div>
+                        }
+                    </form>
+                </main>
+            </div>
+        </FormContext.Provider>
     );
 }
 

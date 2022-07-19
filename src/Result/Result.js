@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '../Button/Button';
+import { FormContext } from '../context';
 
-function Result({ data, editForm }) {
+function Result({ editForm }) {
 
-    const onlyValueData = data.filter(step => step.fieldsets.filter(fieldset => fieldset.fields.filter(field => field.value !== '' && field.name !== 'agree')));
+    const { formData } = useContext(FormContext);
+
+    const resultData = [...formData];
+
+    function filterData(resultData) {
+        return resultData.filter(function (step) {
+            step.fieldsets = step.fieldsets.filter(function (fieldset) {
+                fieldset.fields = fieldset.fields.filter(function (field) {
+                    return field.value !== '' && field.name !== 'agree'
+                });
+                return fieldset.fields.length
+            });
+            return step.fieldsets.length
+        });
+    }
+
+    const filteredData = filterData(resultData);
+
+    console.log(filteredData);
 
     return (
         <div class="form-result">
@@ -24,7 +43,7 @@ function Result({ data, editForm }) {
                         <Button className="form-result__head-btn" type="submit" text="Отправить" />
                     </div>
                     <div class="form-result__content">
-                        {onlyValueData.map(section => (
+                        {filteredData.map(section => (
                             <div key={section.id} class="form-result-section">
                                 <div class="form-result-section__inner">
                                     <div class="form-result__title form-result-section__title">{section.title}</div>
@@ -34,15 +53,10 @@ function Result({ data, editForm }) {
                                                 {fieldset.title && <div class="form-result-section__content-title">{fieldset.title}</div>}
                                                 <div class="form-result-section__fields">
                                                     {fieldset.fields.map(field => (
-                                                        <>
-                                                            {
-                                                                field.value !== '' &&
-                                                                <div div key={field.id} class="form-result-section__field" >
-                                                                    <div class="form-result-section__label">{field.label}</div>
-                                                                    <div class="form-result-section__val">{field.value}</div>
-                                                                </div>
-                                                            }
-                                                        </>
+                                                        <div div key={field.id} class="form-result-section__field" >
+                                                            <div class="form-result-section__label">{field.label}</div>
+                                                            <div class="form-result-section__val">{field.value}</div>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>

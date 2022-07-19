@@ -1,14 +1,17 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
+import { FormContext } from '../context';
 
-function Nav({ steps, currentStep, showStep }) {
+function Nav({ showStep }) {
+
+    const { formData, currentStep } = useContext(FormContext);
 
     //const nav = document.querySelector('.form__nav');
     //const navWidth = nav.scrollWidth;
 
     return (
         <div className="form__nav">
-            {steps.map((step, i) => (
+            {formData.map((step, i) => (
                 <button onClick={() => showStep(i)} key={step.id} type="button" data-step={step.name} className={classNames('form__nav-btn', {
                     'active': step.id == currentStep
                 })}>{step.title}</button>

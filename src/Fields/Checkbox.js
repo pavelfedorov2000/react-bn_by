@@ -1,30 +1,39 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 
-function Checkbox({ fieldsetName, fieldsetType, name, matches, onToggle, check, onChangeField }) {
+function Checkbox({ fieldsetName, fieldsetType, name, matches, onToggle, check, onChangeField, index }) {
 
     //const storageValue = localStorage.getItem(name);
     //const checkedParam = items.indexOf(storageValue);
     //console.log(checkedParam);
-    const [checkedItems, setCheckedItems] = useState([]);
-    console.log(checkedItems);
+    //const [checkedItems, setCheckedItems] = useState([]);
+    //console.log(checkedItems);
+
+    const [checked, setChecked] = useState(false);
+    const [checkedItem, setCheckedItem] = useState(null);
     /* const onCheckRadio = () => {
         setRadioValue(i);
         console.log(radioValue);
     } */
 
     const handleCheckCheckbox = (e) => {
-        let newItems;
+        setChecked(!checked);
+        console.log(checked);
+        //let newItems;
         if (check) {
-            newItems = [...checkedItems];
-            newItems.push(`${check.title}: ${check.price}`);
+            if (checked) {
+                // /`${check.title}: ${check.price}`
+                setCheckedItem(index);
+            } else {
+                setCheckedItem(null);
+            }
         }
         if (matches) {
             onToggle();
         }
-        setCheckedItems(newItems);
-        console.log(checkedItems);
-        onChangeField(e, checkedItems, setCheckedItems);
+        console.log(checked);
+        console.log(checkedItem);
+        onChangeField(e, setCheckedItem, checkedItem, checked);
     }
 
     return (
